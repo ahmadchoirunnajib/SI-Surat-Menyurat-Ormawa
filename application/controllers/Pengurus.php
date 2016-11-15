@@ -40,6 +40,18 @@ class Pengurus extends CI_Controller {
 		
 	}
 
+	public function uploadsurat() {
+
+	}
+
+	public function verifikasiSurat() {
+		
+	}
+
+	public function writeInformasiSurat() {
+		
+	}
+
 	public function logout(){
 		$this->session->set_userdata('username','');
 		//$this->session->set_userdata('role','');
