@@ -54,8 +54,10 @@ class Home extends CI_Controller {
 			}else{
 				foreach($datalogin as $dl);
 				$role = $dl['role'];
+				$id_departemen = $dl['ID_DEPARTEMEN'];
 				$this->session->set_userdata('username', $username);
 				$this->session->set_userdata('role', $role);
+				$this->session->set_userdata('id_departemen', $id_departemen);
 				if($dl['role'] == 0){//admin
 					redirect('admin');
 				}else if($dl['role'] == 1){//kabinet

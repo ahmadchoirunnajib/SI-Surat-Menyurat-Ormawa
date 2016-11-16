@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 15 Nov 2016 pada 02.33
+-- Generation Time: 16 Nov 2016 pada 06.43
 -- Versi Server: 10.1.16-MariaDB
 -- PHP Version: 7.0.9
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `departemen` (
   `ID_DEPARTEMEN` int(11) NOT NULL,
-  `NAMA` varchar(30) NOT NULL,
+  `NAMA` varchar(50) NOT NULL,
   `KETERANGAN` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -40,9 +40,9 @@ INSERT INTO `departemen` (`ID_DEPARTEMEN`, `NAMA`, `KETERANGAN`) VALUES
 (1, 'Internal Affairs', ''),
 (2, 'External Affairs', ''),
 (3, 'Student Resource Development', ''),
-(4, 'Research and Technology Depart', ''),
+(4, 'Research and Technology Development', ''),
 (5, 'Entrepreneurship', ''),
-(6, 'Organization Student Responsib', ''),
+(6, 'Organization Student Responsibility', ''),
 (7, 'Badan Koordinasi Pemandu', ''),
 (8, 'Information Media', '');
 
@@ -54,10 +54,43 @@ INSERT INTO `departemen` (`ID_DEPARTEMEN`, `NAMA`, `KETERANGAN`) VALUES
 
 CREATE TABLE `jenis_surat` (
   `ID_JENIS` int(11) NOT NULL,
-  `NAMA` varchar(10) NOT NULL,
+  `NAMA` varchar(30) NOT NULL,
   `KODE` varchar(5) NOT NULL,
   `KETERANGAN` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `jenis_surat`
+--
+
+INSERT INTO `jenis_surat` (`ID_JENIS`, `NAMA`, `KODE`, `KETERANGAN`) VALUES
+(1, 'Surat Permintaan Kerjasama', 'SPK', ''),
+(2, 'Surat Undangan', 'SU', ''),
+(3, 'Surat Peminjaman', 'SPi', ''),
+(4, 'Surat Keramaian', 'SKr', ''),
+(5, 'Surat Permohonan', 'SPm', ''),
+(6, 'Surat Keterangan', 'SKet', '');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `keterangan`
+--
+
+CREATE TABLE `keterangan` (
+  `ID` int(11) NOT NULL,
+  `ASAL` varchar(50) NOT NULL,
+  `JENIS_SURAT` int(11) NOT NULL,
+  `LINK` varchar(255) NOT NULL,
+  `KETERANGAN` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `keterangan`
+--
+
+INSERT INTO `keterangan` (`ID`, `ASAL`, `JENIS_SURAT`, `LINK`, `KETERANGAN`) VALUES
+(1, 'BEM FTK', 2, 'http://localhost/suratbemf/upload/eksternal/Internal Affairs/11056542_804169496363590_8889743721536821178_n.jpg', 'Surat undangan kajian');
 
 -- --------------------------------------------------------
 
@@ -72,10 +105,28 @@ CREATE TABLE `nomor_surat` (
   `ID_PROKER` int(11) NOT NULL,
   `BULAN` varchar(10) NOT NULL,
   `TAHUN` varchar(4) NOT NULL,
-  `WAKTU` date NOT NULL,
+  `WAKTU` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `USERNAME` varchar(50) NOT NULL,
   `STATUS` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `nomor_surat`
+--
+
+INSERT INTO `nomor_surat` (`ID`, `NOMOR_SURAT`, `ID_JENIS`, `ID_PROKER`, `BULAN`, `TAHUN`, `WAKTU`, `USERNAME`, `STATUS`) VALUES
+(1, 1, 1, 0, '', '', '0000-00-00 00:00:00', '', 0),
+(2, 2, 1, 0, 'XI', '2016', '2015-11-15 17:00:00', 'iabahagia', 0),
+(3, 3, 1, 0, 'XI', '2016', '2015-11-15 17:00:00', 'iabahagia', 0),
+(4, 4, 1, 0, 'XI', '2016', '2015-11-15 17:00:00', 'iabahagia', 0),
+(5, 1, 2, 0, 'XI', '2016', '2015-11-15 17:00:00', 'iabahagia', 0),
+(6, 2, 2, 0, 'XI', '2016', '2016-11-15 09:52:57', 'iabahagia', 0),
+(7, 3, 2, 0, 'XI', '2016', '2016-11-15 09:55:19', 'iabahagia', 0),
+(8, 4, 2, 0, 'XI', '2016', '2016-11-15 09:55:33', 'iabahagia', 0),
+(9, 5, 2, 0, 'XI', '2016', '2016-11-15 09:56:47', 'iabahagia', 0),
+(10, 6, 2, 0, 'XI', '2016', '2016-11-15 09:56:58', 'iabahagia', 0),
+(11, 5, 1, 1, 'XI', '2016', '2016-11-15 10:17:11', 'iabahagia', 0),
+(12, 6, 1, 1, 'XI', '2016', '2016-11-16 04:44:16', 'iabahagia', 0);
 
 -- --------------------------------------------------------
 
@@ -96,7 +147,55 @@ CREATE TABLE `program_kerja` (
 --
 
 INSERT INTO `program_kerja` (`ID_PROKER`, `NAMA`, `KODE_PROKER`, `ID_DEPARTEMEN`, `KETERANGAN`) VALUES
-(0, 'Dies Natalis 56', 'DiesNatalis', 1, '');
+(0, 'Dies Natalis 56', 'DiesNatalis', 1, ''),
+(1, 'Health and Care', 'HealthCare', 1, '');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `surat_eksternal`
+--
+
+CREATE TABLE `surat_eksternal` (
+  `ID` int(11) NOT NULL,
+  `ASAL` varchar(50) NOT NULL,
+  `JENIS_SURAT` int(11) NOT NULL,
+  `KETERANGAN` varchar(255) NOT NULL,
+  `LINK` varchar(255) NOT NULL,
+  `ID_DEPARTEMEN` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `surat_eksternal`
+--
+
+INSERT INTO `surat_eksternal` (`ID`, `ASAL`, `JENIS_SURAT`, `KETERANGAN`, `LINK`, `ID_DEPARTEMEN`) VALUES
+(1, 'Untitled.png', 1, 'terbaik', 'http://localhost/suratbemf/upload/eksternal/Internal Affairs/11056542_804169496363590_8889743721536821178_n.jpg', 1),
+(3, 'Untitled2.png', 1, 'terbaik', 'http://localhost/suratbemf/upload/eksternal/Internal Affairs/Untitled2.png', 0),
+(4, 'diagram_kausatik.docx', 3, '', 'http://localhost/suratbemf/upload/eksternal/Internal Affairs/diagram_kausatik.docx', 0),
+(5, '11056542_804169496363590_8889743721536821178_n.jpg', 2, '', 'http://localhost/suratbemf/upload/eksternal/Internal Affairs/diagram_kausatik.docx', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `template_surat`
+--
+
+CREATE TABLE `template_surat` (
+  `ID` int(11) NOT NULL,
+  `NAMA_FILE` varchar(50) NOT NULL,
+  `KETERANGAN` varchar(100) NOT NULL,
+  `LINK` varchar(100) NOT NULL,
+  `JENIS_SURAT` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `template_surat`
+--
+
+INSERT INTO `template_surat` (`ID`, `NAMA_FILE`, `KETERANGAN`, `LINK`, `JENIS_SURAT`) VALUES
+(1, 'Surat Peminjaman', 'SPi', 'http://localhost/suratbemf/upload/template surat/Surat Peminjaman.docx', 3),
+(2, 'Surat Undangan', 'SU', 'http://localhost/suratbemf/upload/template surat/Surat Undangan.docx', 2);
 
 -- --------------------------------------------------------
 
@@ -137,6 +236,12 @@ ALTER TABLE `jenis_surat`
   ADD PRIMARY KEY (`ID_JENIS`);
 
 --
+-- Indexes for table `keterangan`
+--
+ALTER TABLE `keterangan`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `nomor_surat`
 --
 ALTER TABLE `nomor_surat`
@@ -147,6 +252,18 @@ ALTER TABLE `nomor_surat`
 --
 ALTER TABLE `program_kerja`
   ADD PRIMARY KEY (`ID_PROKER`);
+
+--
+-- Indexes for table `surat_eksternal`
+--
+ALTER TABLE `surat_eksternal`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `template_surat`
+--
+ALTER TABLE `template_surat`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `user`
@@ -163,6 +280,31 @@ ALTER TABLE `user`
 --
 ALTER TABLE `departemen`
   MODIFY `ID_DEPARTEMEN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT for table `keterangan`
+--
+ALTER TABLE `keterangan`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `nomor_surat`
+--
+ALTER TABLE `nomor_surat`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `program_kerja`
+--
+ALTER TABLE `program_kerja`
+  MODIFY `ID_PROKER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `surat_eksternal`
+--
+ALTER TABLE `surat_eksternal`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `template_surat`
+--
+ALTER TABLE `template_surat`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `user`
 --
